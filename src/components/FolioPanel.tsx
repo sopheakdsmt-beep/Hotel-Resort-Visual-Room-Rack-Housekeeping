@@ -61,7 +61,8 @@ export function FolioPanel({ stay, room, onView, onSettled }: FolioPanelProps) {
   }
 
   return (
-    <div className="stack">
+    <div className="folio">
+    <div className="folio-scroll stack">
       <div className="guest-block">
         <strong>{stay.guestName}</strong>
         <span>
@@ -169,36 +170,38 @@ export function FolioPanel({ stay, room, onView, onSettled }: FolioPanelProps) {
                 </div>
               ))}
           </div>
-          {invoice ? (
-            <div className="sheet-total" data-testid="folio-total">
-              <span>Total / សរុប</span>
-              <strong>{formatUsd(invoice.totalUsd)}</strong>
-              <em>{formatKhr(invoice.totalKhr)}</em>
-            </div>
-          ) : (
-            <p className="errors">{error}</p>
-          )}
-          <InvoiceDoc stay={stay} room={room} settings={state.settings} />
-          <button type="button" className="btn btn-line" onClick={() => window.print()}>
-            Print invoice · បោះពុម្ពវិក្កយបត្រ
-          </button>
-          <button
-            type="button"
-            className="btn btn-danger"
-            data-testid="checkout"
-            onClick={() => {
-              if (!confirming) {
-                setConfirming(true);
-                return;
-              }
-              dispatch({ type: "checkout", stayId: stay.id });
-              onSettled();
-            }}
-          >
-            {confirming ? "Confirm payment · បញ្ជាក់ការទូទាត់" : "Complete checkout · បញ្ចប់ការចេញ"}
-          </button>
-          <p className="help">Checkout marks the room dirty for housekeeping.</p>
         </>
+      )}
+    </div>
+      {view === "folio" && (
+        <div className="settle">
+          <InvoiceDoc stay={stay} room={room} settings={state.settings} variant="slip" />
+          <div className="settle-actions">
+            <button type="button" className="btn btn-line" onClick={() => window.print()}>
+              Print invoice · បោះពុម្ពវិក្កយបត្រ
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger"
+              data-testid="checkout"
+              onClick={() => {
+                if (!confirming) {
+                  setConfirming(true);
+                  return;
+                }
+                dispatch({ type: "checkout", stayId: stay.id });
+                onSettled();
+              }}
+            >
+              {confirming ? "Confirm payment · បញ្ជាក់ការទូទាត់" : "Complete checkout · បញ្ចប់ការចេញ"}
+            </button>
+          </div>
+          <p className="help" data-testid="folio-total">
+            {invoice
+              ? `Checkout marks the room dirty · ${formatUsd(invoice.totalUsd)} · ${formatKhr(invoice.totalKhr)}`
+              : error}
+          </p>
+        </div>
       )}
     </div>
   );

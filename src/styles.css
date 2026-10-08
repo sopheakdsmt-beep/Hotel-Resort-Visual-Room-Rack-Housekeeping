@@ -271,7 +271,10 @@ button { cursor: pointer; }
   font-size: 12px;
   text-align: right;
 }
-.sheet-body { overflow: auto; padding: 16px; }
+.sheet-body { overflow: auto; padding: 16px; flex: 1; min-height: 0; }
+.sheet-body:has(.folio) { display: flex; flex-direction: column; overflow: hidden; padding-bottom: 10px; }
+.folio { display: flex; flex-direction: column; min-height: 0; flex: 1; gap: 10px; }
+.folio-scroll { overflow: auto; min-height: 0; padding-right: 2px; }
 .stack { display: flex; flex-direction: column; gap: 12px; }
 .stack h3 { margin: 8px 0 0; font-size: 16px; }
 .stack h3 span { display: block; color: var(--gold-deep); font-weight: 500; }
@@ -375,9 +378,9 @@ input, .sign {
   border-radius: 14px;
   padding: 8px 10px;
 }
-.catalog-item div { display: flex; flex-direction: column; }
+.catalog-item > div:first-child { display: flex; flex-direction: column; }
 .catalog-item span { color: var(--ink-soft); font-size: 13px; }
-.stepper { display: flex; align-items: center; gap: 8px; }
+.stepper { display: flex; flex-direction: row; align-items: center; gap: 8px; }
 .stepper button {
   width: 40px;
   height: 40px;
@@ -437,6 +440,22 @@ input, .sign {
 }
 .khqr-card img { width: 220px; height: 220px; }
 .qr-wait { height: 220px; display: grid; place-items: center; color: var(--ink-soft); }
+.settle {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+}
+.slip { display: grid; grid-template-columns: 148px 1fr; gap: 12px; align-items: center; background: white; border: 1px solid var(--line); border-radius: 16px; padding: 8px; }
+.slip img { width: 148px; height: 148px; display: block; }
+.slip strong { display: block; font-family: "Fraunces", Georgia, serif; font-size: 32px; line-height: 1; }
+.slip em { color: var(--gold-deep); font-style: normal; }
+.slip p { margin: 4px 0 0; color: var(--ink-soft); }
+.qr-wait.compact { height: 148px; width: 148px; }
+.settle-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .thanks { text-align: center; margin: 12px 0 0; }
 .doc-photos { display: flex; gap: 10px; flex-wrap: wrap; }
 .doc-photos img { width: 180px; height: 120px; object-fit: cover; border-radius: 10px; }

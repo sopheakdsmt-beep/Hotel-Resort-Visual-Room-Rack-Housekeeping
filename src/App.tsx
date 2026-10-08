@@ -419,7 +419,6 @@ function RoomCard({
               Due out · <span lang="km">ចេញថ្ងៃនេះ</span>
             </span>
           )}
-          {stay && !stay.passportImage && mode === "rack" && <span className="guest-line muted">No passport snap</span>}
         </span>
       </button>
       {mode === "housekeeping" && room.status === "dirty" && (

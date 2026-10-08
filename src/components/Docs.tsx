@@ -63,9 +63,33 @@ function DocHeader({ settings, kickerKm, kickerEn }: { settings: Settings; kicke
   );
 }
 
-export function InvoiceDoc({ stay, room, settings }: DocProps) {
+export function InvoiceDoc({ stay, room, settings, variant = "full" }: DocProps & { variant?: "full" | "slip" }) {
   const { invoice, error } = useInvoice(stay, room, settings);
   const qr = useQr(invoice?.khqr);
+  if (variant === "slip") {
+    return (
+      <div className="slip">
+        {invoice && qr ? (
+          <img src={qr} alt={`KHQR for ${formatUsd(invoice.totalUsd)}`} width={148} height={148} data-testid="khqr" />
+        ) : (
+          <div className="qr-wait compact">{error ?? "Preparing KHQR…"}</div>
+        )}
+        <div>
+          <div className="khqr-flag">KHQR</div>
+          {invoice ? (
+            <>
+              <strong>{formatUsd(invoice.totalUsd)}</strong>
+              <em>{formatKhr(invoice.totalKhr)}</em>
+              <p>Scan to pay · ស្កេនដើម្បីបង់</p>
+            </>
+          ) : (
+            <p>{error}</p>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <article className="doc">
       <DocHeader settings={settings} kickerKm="វិក្កយបត្រ" kickerEn="Invoice" />
